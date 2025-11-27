@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "${WWW_PORT}:80"
+    volumes:
+      - ${WWW_PATH}:/usr/share/nginx/html
+      - ./nginx_default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+
+  app:
+    build: ./my-counter-app
+    environment:
+      - PORT=3000
+      - PLUGIN_HOST=plugin-add2
+      - PLUGIN_PORT=50051
+    volumes:
+      - ./grpc:/app/grpc        
+    expose:
+      - "3000"
+    depends_on:
+      - plugin-add2
+
+  plugin-add2:
+    build:
+      context: ./plugins/add2
+      dockerfile: Dockerfile
+    container_name: plugin-add2
+    command: node plugin.js
+    volumes:
+      - ./plugins/add2:/app
+      - ./grpc:/app/grpc
+    expose:
+      - "50051"

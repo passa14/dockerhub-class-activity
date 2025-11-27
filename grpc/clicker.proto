@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+service ClickerPlugin {
+  rpc Process (IncrementRequest) returns (IncrementReply);
+}
+
+message IncrementRequest {
+  int32 number = 1;
+}
+
+message IncrementReply {
+  int32 number = 1;
+}
