@@ -1,0 +1,4 @@
+WWW_PORT=8080
+WWW_PATH=./www
+TAG=v1
+DOCKER_HUB=patsa/my-counter-app:v1
